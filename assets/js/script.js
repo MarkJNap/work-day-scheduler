@@ -35,10 +35,11 @@ $(function () {
     // console.log(localStorage);
   })
 
+  // Puts the local storage value in the description element. Maybe put in some sort of loop for all hours, or just list every hour
+  $("#hour-9").children(".description").val(localStorage.getItem("hour-9"))
+
+
   currentTime()
 
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
+
 });
