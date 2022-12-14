@@ -57,3 +57,16 @@ textarea {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
 }
+
+#clear-btn {
+  padding: 10px;
+  background-color: #06afd544;
+  border-radius: 10px;
+}
+
+#clear-btn:hover {
+  background-color: #06aed5;
+  color: white;
+  scale: 1.2;
+  transition: all 0.3s;
+}

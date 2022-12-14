@@ -1,45 +1,52 @@
 
 $(function () {
-  // Display the current date and time in the header of the page.
-  let today = dayjs();
-  $('#currentDay').text(today.format('dddd, DD MMMM, YYYY h:mm A'));
 
-  function currentTime() {
+  // Display the updated current date and time in the header of the page.
+  setInterval(function() {
+    const today = dayjs();
+    $("#currentDay").text(today.format("dddd, DD MMMM YYYY, h:mm A"));
+  },1000)
+
+  // Clears local storage when button is clicked
+  $("#clear-btn").on("click", function() { 
+    localStorage.clear()
+    location.reload()
+  })
+
+  // Runs the main function
+  eachBlockStatus()
+
+  function eachBlockStatus() {
     // Gets the current hour in 24h time
-    let currentHour = dayjs().hour()
-    // Just used to test when outside of the 9-5 hours
-    // --- let currentHour = 14 ---
-    // console.log(currentHour);
+    const currentHour = dayjs().hour()
     let timeBlockEl = $(".time-block")
     $(timeBlockEl).each(function() {
-      // For each timeblock it gets the id and removes hour- leaving only the time
+      // For each timeblock it gets the id and removes hour- leaving only the timeblock time
       let eachBlockTime = Number($(this).attr("id").split("hour-")[1])
-      // console.log(eachBlockTime);
-      // Adds classes for past, future and present depending on the current time
+      // Adds classes for past, future and present comparing the time to the timeblock
       if (eachBlockTime < currentHour) {
+        // Sets colour to grey
         $(this).addClass("past")
       } else if (eachBlockTime === currentHour) {
+        // Sets colour to red
         $(this).addClass("present")
+        // Sets colour to green
       } else {
         $(this).addClass("future")
-      }})
+      }
+      // Puts what is in already stored in local storage in the text boxes if there is anything.
+      let blockTimeId = $(this).attr("id")
+      let existingNote = localStorage.getItem(blockTimeId)
+      if (existingNote !== null) {
+        $(this).children(".description").val(existingNote)
+      }
+    })
   }
 
   // When the save button is clicked, it gets the time and text of the box it is connected with and saves to local storage
   $(".saveBtn").on("click", function() {
     let timeId = $(this).parent().attr("id");
     let textEl = $(this).siblings(".description").val();
-    console.log(timeId);
-    console.log(textEl);
     localStorage.setItem(timeId, textEl);
-    // console.log(localStorage);
   })
-
-  // Puts the local storage value in the description element. Maybe put in some sort of loop for all hours, or just list every hour
-  $("#hour-9").children(".description").val(localStorage.getItem("hour-9"))
-
-
-  currentTime()
-
-
 });
